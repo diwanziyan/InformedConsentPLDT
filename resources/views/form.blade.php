@@ -27,7 +27,7 @@
 
 <h2>Form Persetujuan Tindakan</h2>
 
-<form method="POST" action="/form-persetujuan" target="blank">
+<form method="POST" action="/form-persetujuan" target="_blank">
     @csrf
 
     <label>Nama Penerima Informasi</label>
@@ -55,12 +55,13 @@
     <label>Nama Dokter</label>
     <select name="nama_dokter" id="nama_dokter" required>
         <option value="">-- Pilih Dokter --</option>
-        <option value="Budi">Budi</option>
-        <option value="Andi">Andi</option>
-        <option value="Sari">Sari</option>
-        <option value="Rina">Rina</option>
-        <option value="Agus">Agus</option>
+
+        @foreach ($dokters as $dokter)
+            <option value="{{ $dokter }}">{{ $dokter }}</option>
+        @endforeach
     </select>
+
+
 
     <label>Jenis Tindakan</label>
         <select name="jenis_tindakan">
