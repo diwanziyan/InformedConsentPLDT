@@ -77,18 +77,24 @@
     <canvas id="canvas_penerima_informasi" width="400" height="150" style="border:1px solid #ccc;"></canvas>
     <button type="button" id="clear_penerima_informasi">Clear</button>
     <input type="hidden" name="ttd_penerima_informasi" id="ttd_penerima_informasi">
+    <label>Penerima Informasi</label>
+    <input type="text" name="nama_ttd_penerima_informasi"
+        id="nama_ttd_penerima_informasi" readonly>
 
     <label>Tanda Tangan Dokter</label>
     <canvas id="canvas_dokter" width="400" height="150" style="border:1px solid #ccc;"></canvas>
     <button type="button" id="clear_dokter">Clear</button>
     <input type="hidden" name="ttd_dokter" id="ttd_dokter">
+    <label>Dokter</label>
+    <input type="text" name="nama_ttd_dokter"
+       id="nama_ttd_dokter" readonly>
 
     <label>Tanda Tangan Perawat</label>
     <canvas id="canvas_perawat" width="400" height="150" style="border:1px solid #ccc;"></canvas>
     <button type="button" id="clear_perawat">Clear</button>
     <input type="hidden" name="ttd_perawat" id="ttd_perawat">
-
-
+    <label>Perawat</label>
+    <input type="text" name="nama_ttd_perawat" required>
 
     <button type="submit">Submit</button>
 </form>
@@ -166,7 +172,21 @@ setupCanvas('canvas_perawat', 'ttd_perawat', 'clear_perawat');
         }
     });
 </script>
+<script>
+$(document).ready(function () {
 
+    // auto isi nama penerima informasi ke kolom bawah ttd
+    $('#nama_penerima_informasi').on('input', function () {
+        $('#nama_ttd_penerima_informasi').val($(this).val());
+    });
+
+    // auto isi nama dokter dari select2
+    $('#nama_dokter').on('change', function () {
+        $('#nama_ttd_dokter').val($(this).val());
+    });
+
+});
+</script>
 
 </body>
 </html>

@@ -11,6 +11,7 @@ class PdfController extends Controller
     
     public function generate(Request $request)
 {
+    
     // =====================
         // 1. VALIDASI REQUEST (NO.1)
         // =====================
@@ -27,6 +28,11 @@ class PdfController extends Controller
             'ttd_penerima_informasi'    => 'required',
             'ttd_dokter'                => 'required',
             'ttd_perawat'               => 'required',
+
+            // Nama TTD
+              'nama_ttd_penerima_informasi' => 'required|string',
+              'nama_ttd_dokter'             => 'required|string',
+              'nama_ttd_perawat'            => 'required|string',
         ]);
         if ($request->hubungan_pasien === 'diri sendiri') {
             $request->merge([
@@ -101,8 +107,23 @@ class PdfController extends Controller
         // TTD HALAMAN 1
         // =====================
         $pdf->Image($ttdPenerimaInformasi, 30, 196, 40, 20);
-        $pdf->Image($ttdPerawat, 90, 196, 40, 20);
+        $pdf->Image($ttdPerawat, 83, 196, 40, 20);
         $pdf->Image($ttdDokter, 150, 196, 40, 20);
+
+        $pdf->SetFont('helvetica', '', 9);
+
+        // Nama Penerima Informasi
+        $pdf->SetXY(23, 218);
+        $pdf->Cell(40, 5, $request->nama_ttd_penerima_informasi, 0, 0, 'C');
+
+        // Nama Perawat
+        $pdf->SetXY(85, 218);
+        $pdf->Cell(40, 5, $request->nama_ttd_perawat, 0, 0, 'C');
+
+        // Nama Dokter
+        $pdf->SetXY(144, 218);
+        $pdf->Cell(40, 5, $request->nama_ttd_dokter, 0, 0, 'C');
+
 
         /*
         |--------------------------------------------------------------------------
@@ -125,9 +146,18 @@ class PdfController extends Controller
 
             // =====================
             // TTD HALAMAN 2
-            // =====================
-            $pdf->Image($ttdPenerimaInformasi, 48, 269, 40, 20);
-            $pdf->Image($ttdPerawat, 120, 269, 40, 20);
+            $pdf->Image($ttdPerawat, 45, 269, 40, 20);
+            $pdf->Image($ttdPenerimaInformasi, 124, 269, 40, 20);
+
+            $pdf->SetFont('helvetica', '', 9);
+
+            // Nama Penerima Informasi
+            $pdf->SetXY(48, 281);
+            $pdf->Cell(40, 5, $request->nama_ttd_perawat, 0, 0, 'C');
+
+            // Nama Perawat
+            $pdf->SetXY(120, 281);
+            $pdf->Cell(40, 5, $request->nama_ttd_penerima_informasi, 0, 0, 'C');
         }
 
         // =====================
