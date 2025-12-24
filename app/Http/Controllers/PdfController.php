@@ -113,15 +113,15 @@ class PdfController extends Controller
         $pdf->SetFont('helvetica', '', 9);
 
         // Nama Penerima Informasi
-        $pdf->SetXY(23, 218);
+        $pdf->SetXY(23, 219.3);
         $pdf->Cell(40, 5, $request->nama_ttd_penerima_informasi, 0, 0, 'C');
 
         // Nama Perawat
-        $pdf->SetXY(85, 218);
+        $pdf->SetXY(85, 219.3  );
         $pdf->Cell(40, 5, $request->nama_ttd_perawat, 0, 0, 'C');
 
         // Nama Dokter
-        $pdf->SetXY(144, 218);
+        $pdf->SetXY(144, 219);
         $pdf->Cell(40, 5, $request->nama_ttd_dokter, 0, 0, 'C');
 
 
@@ -151,11 +151,11 @@ class PdfController extends Controller
 
             $pdf->SetFont('helvetica', '', 9);
 
-            // Nama Penerima Informasi
-            $pdf->SetXY(48, 281);
+            // Nama Perawat
+            $pdf->SetXY(46, 281);
             $pdf->Cell(40, 5, $request->nama_ttd_perawat, 0, 0, 'C');
 
-            // Nama Perawat
+            // Nama Penerima Informasi
             $pdf->SetXY(120, 281);
             $pdf->Cell(40, 5, $request->nama_ttd_penerima_informasi, 0, 0, 'C');
         }
