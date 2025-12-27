@@ -80,6 +80,9 @@ class PdfController extends Controller
         // =====================
         $pdf = new Fpdi();
         $pageCount = $pdf->setSourceFile($templatePath);
+        if (!file_exists($templatePath)) {
+            abort(500, 'File template PDF tidak ditemukan: ' . basename($templatePath));
+        }
 
         /*
         |--------------------------------------------------------------------------
@@ -121,7 +124,7 @@ class PdfController extends Controller
         $pdf->Cell(40, 5, $request->nama_ttd_perawat, 0, 0, 'C');
 
         // Nama Dokter
-        $pdf->SetXY(144, 219);
+        $pdf->SetXY(144, 219.3);
         $pdf->Cell(40, 5, $request->nama_ttd_dokter, 0, 0, 'C');
 
 
@@ -166,24 +169,40 @@ class PdfController extends Controller
         @unlink($ttdPenerimaInformasi);
         @unlink($ttdPerawat);
         @unlink($ttdDokter);
+        // =====================
+        // 9. OUTPUT PDF (NAMA DINAMIS)
+        // =====================
+        $namaPasien = preg_replace('/[^A-Za-z0-9\- ]/', '', $request->nama_pasien);
+        $namaPasien = str_replace(' ', '_', $namaPasien);
 
-        // =====================
-        // 9. OUTPUT PDF
-        // =====================
-        return response($pdf->Output('persetujuan.pdf', 'S'))
+        $namaFile = sprintf(
+            'form-persetujuan_%s_%s.pdf',
+            $namaPasien,
+            Carbon::now()->format('d-m-Y')
+        );
+
+        return response($pdf->Output($namaFile, 'S'))
             ->header('Content-Type', 'application/pdf')
-            ->header('Content-Disposition', 'inline; filename="persetujuan.pdf"');
+            ->header('Content-Disposition', 'inline; filename="'.$namaFile.'"');
+
     }
 
 
     private function saveSignature($base64, $role)
-    {
-        $base64 = str_replace('data:image/png;base64,', '', $base64);
-        $image  = base64_decode($base64);
+{
+    $base64 = str_replace('data:image/png;base64,', '', $base64);
+    $image  = base64_decode($base64);
 
-        $path = storage_path("app/temp/ttd_{$role}.png");
-        file_put_contents($path, $image);
+    $dir = storage_path('app/temp');
 
-        return $path;
+    if (!file_exists($dir)) {
+        mkdir($dir, 0755, true);
     }
+
+    $path = $dir . "/ttd_{$role}.png";
+    file_put_contents($path, $image);
+
+    return $path;
+}
+
 }
